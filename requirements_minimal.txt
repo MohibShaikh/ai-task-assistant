@@ -1,12 +1,8 @@
 flask==2.3.3
-sentence-transformers==2.2.2
-faiss-cpu==1.7.4
 numpy==1.24.3
-pyyaml==6.0.1
 requests==2.31.0
 python-dotenv==1.0.0
 pinecone==2.2.4
-colorama==0.4.6
 bcrypt==4.0.1
 flask-talisman==1.1.0
 flask-limiter==2.8.1
