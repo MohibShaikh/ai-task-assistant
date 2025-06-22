@@ -101,34 +101,20 @@ FLASK_ENV=development
 
 ## 🚀 Deployment
 
-### Railway Deployment (Recommended)
+### Cloud Platforms
 
-This backend is optimized for Railway deployment:
-
-1. **Push to GitHub**
-   ```bash
-   git add .
-   git commit -m "Backend ready for deployment"
-   git push origin main
-   ```
-
-2. **Deploy on Railway**
-   - Go to [railway.app](https://railway.app)
-   - Connect your GitHub repository
-   - Set environment variables
-   - Deploy automatically
-
-3. **Configuration Files**
-   - `railway.json` - Railway deployment config
-   - `requirements.txt` - Python dependencies
-   - `Procfile` - Production server config
-
-### Other Platforms
-
-The app is also ready for:
+This backend is ready for deployment on:
+- **Railway**: Connect GitHub repository and set environment variables
 - **Render**: Use `requirements.txt` and `gunicorn`
 - **Heroku**: Use `Procfile` and `runtime.txt`
 - **VPS**: Use `gunicorn` for production
+
+### Production Files
+
+The following files are included for production deployment:
+- `requirements.txt` - Python dependencies
+- `Procfile` - Production server configuration
+- `runtime.txt` - Python version specification
 
 ## 🔒 Security Features
 
@@ -190,9 +176,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🆘 Support
 
-- **Deployment**: See `RAILWAY_DEPLOYMENT.md`
 - **API Documentation**: Check the endpoints above
 - **Security**: All security features are OWASP-compliant
+- **Flutter Integration**: See `FLUTTER_SEPARATION.md`
 
 ---
 
