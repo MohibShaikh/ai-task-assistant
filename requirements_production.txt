@@ -1,0 +1,14 @@
+Flask==3.1.1
+sentence-transformers==4.1.0
+faiss-cpu==1.11.0
+numpy==2.3.1
+PyYAML==6.0.2
+requests==2.32.4
+python-dotenv==1.1.0
+pinecone==7.2.0
+colorama==0.4.6
+bcrypt==4.3.0
+flask-talisman==1.1.0
+flask-limiter==3.12
+gunicorn==23.0.0
+flask-cors==6.0.1 

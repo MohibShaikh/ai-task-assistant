@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Task Assistant - Smart Task Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Auth Overlay (shared between landing and dashboard) -->
+    <div id="auth-overlay" class="auth-overlay" style="display:none;">
+        <div class="auth-modal">
+            <div class="auth-tabs">
+                <button id="login-tab" class="auth-tab active" onclick="showLoginForm()">Login</button>
+                <button id="register-tab" class="auth-tab" onclick="showRegisterForm()">Register</button>
+            </div>
+            <div id="login-form-section">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" required placeholder="Enter your username">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required placeholder="Enter your password">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                    <div class="form-divider">
+                        <span>or</span>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="google-login-btn" class="btn btn-google">
+                            <i class="fab fa-google"></i>
+                            Continue with Google
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div id="register-form-section" style="display:none;">
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-username">Username</label>
+                        <input type="text" id="register-username" required placeholder="Choose a username">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required placeholder="Create a password">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                    <div class="form-divider">
+                        <span>or</span>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="google-register-btn" class="btn btn-google">
+                            <i class="fab fa-google"></i>
+                            Continue with Google
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Landing Page (shown when not authenticated) -->
+    <div id="landing-page" class="landing-page">
+        <!-- Navigation -->
+        <nav class="landing-nav">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Task Assistant</span>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn btn-outline" id="landing-login-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </button>
+                    <button class="btn btn-primary" id="landing-register-btn">
+                        <i class="fas fa-user-plus"></i>
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Smart Task Management<br>
+                        <span class="gradient-text">Powered by AI</span>
+                    </h1>
+                    <p class="hero-description">
+                        Organize your tasks intelligently with AI-powered search, smart suggestions, and beautiful analytics. 
+                        Stay productive and never miss a deadline.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-large" id="hero-register-btn">
+                            <i class="fas fa-rocket"></i>
+                            Start Free
+                        </button>
+                        <button class="btn btn-outline btn-large" id="learn-more-btn">
+                            <i class="fas fa-play"></i>
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-card">
+                        <div class="hero-card-header">
+                            <div class="hero-card-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="hero-card-info">
+                                <h4>Your Tasks</h4>
+                                <p>3 pending • 2 completed</p>
+                            </div>
+                        </div>
+                        <div class="hero-card-tasks">
+                            <div class="hero-task completed">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Review project proposal</span>
+                            </div>
+                            <div class="hero-task pending">
+                                <i class="fas fa-clock"></i>
+                                <span>Prepare presentation slides</span>
+                            </div>
+                            <div class="hero-task pending">
+                                <i class="fas fa-clock"></i>
+                                <span>Schedule team meeting</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features-section" class="features-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Why Choose AI Task Assistant?</h2>
+                    <p>Discover the features that make task management effortless and intelligent</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>AI-Powered Search</h3>
+                        <p>Find tasks instantly with semantic search that understands context and meaning</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Smart Analytics</h3>
+                        <p>Get insights into your productivity patterns and task completion trends</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>Smart Suggestions</h3>
+                        <p>Receive intelligent task recommendations based on your patterns and priorities</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <h3>Real-time Sync</h3>
+                        <p>Your tasks sync across all devices instantly, never lose your progress</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Secure & Private</h3>
+                        <p>Your data is encrypted and stays private, we never share your information</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-universal-access"></i>
+                        </div>
+                        <h3>Accessible</h3>
+                        <p>Beautiful design that works for everyone, regardless of abilities</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>How It Works</h2>
+                    <p>Get started in minutes with our simple 3-step process</p>
+                </div>
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3>Create Account</h3>
+                        <p>Sign up in seconds with just your email and password</p>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <h3>Add Tasks</h3>
+                        <p>Start adding your tasks with priorities and due dates</p>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">
+                            <i class="fas fa-trending-up"></i>
+                        </div>
+                        <h3>Stay Productive</h3>
+                        <p>Use AI features to organize and complete tasks efficiently</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Ready to Boost Your Productivity?</h2>
+                    <p>Join thousands of users who have transformed their task management</p>
+                    <button class="btn btn-primary btn-large" id="cta-register-btn">
+                        <i class="fas fa-rocket"></i>
+                        Get Started Now - It's Free!
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="landing-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <i class="fas fa-robot"></i>
+                        <span>AI Task Assistant</span>
+                    </div>
+                    <p>&copy; 2024 AI Task Assistant. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Dashboard (shown when authenticated) -->
+    <div id="dashboard" class="dashboard" style="display: none;">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Task Assistant</span>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn btn-primary" onclick="openAddTaskModal()">
+                        <i class="fas fa-plus"></i>
+                        Add Task
+                    </button>
+                    <button class="btn btn-secondary" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="logout-btn" class="btn btn-secondary" onclick="logoutUser()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-tasks">0</h3>
+                            <p>Total Tasks</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon completed">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="completed-tasks">0</h3>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon pending">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="pending-tasks">0</h3>
+                            <p>Pending</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon overdue">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="overdue-tasks">0</h3>
+                            <p>Overdue</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smart Suggestions Section -->
+            <div id="suggestions-section" class="suggestions-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-magic"></i> Smart Suggestions</h2>
+                </div>
+                <div id="suggestions-list" class="suggestions-list">
+                    <!-- Suggestions will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Filters and Search -->
+            <div class="controls-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Search tasks...">
+                </div>
+                <div class="filters">
+                    <select id="priority-filter" onchange="filterTasks()">
+                        <option value="">All Priorities</option>
+                        <option value="high">High Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="low">Low Priority</option>
+                    </select>
+                    <select id="status-filter" onchange="filterTasks()">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <select id="due-filter" onchange="filterTasks()">
+                        <option value="">All Due Dates</option>
+                        <option value="overdue">Overdue</option>
+                        <option value="today">Due Today</option>
+                        <option value="soon">Due Soon</option>
+                        <option value="upcoming">Upcoming</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tasks Section -->
+            <div class="tasks-section">
+                <div class="section-header">
+                    <h2>Your Tasks</h2>
+                    <div class="view-controls">
+                        <button class="view-btn active" onclick="setView('list')">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button class="view-btn" onclick="setView('grid')">
+                            <i class="fas fa-th"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="tasks-container" class="tasks-container list-view">
+                    <!-- Tasks will be loaded here -->
+                </div>
+                
+                <div id="loading" class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading tasks...</p>
+                </div>
+                
+                <div id="no-tasks" class="no-tasks" style="display: none;">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No tasks found</h3>
+                    <p>Create your first task to get started!</p>
+                    <button class="btn btn-primary" onclick="openAddTaskModal()">
+                        <i class="fas fa-plus"></i>
+                        Add Task
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Task Modal -->
+        <div id="add-task-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add New Task</h3>
+                    <button class="close-btn" onclick="closeAddTaskModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-task-form">
+                        <div class="form-group">
+                            <label for="task-title">Task Title *</label>
+                            <input type="text" id="task-title" required placeholder="Enter task title">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="task-description">Description</label>
+                            <textarea id="task-description" placeholder="Enter task description"></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="task-priority">Priority</label>
+                                <select id="task-priority">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="task-due-date">Due Date</label>
+                                <input type="date" id="task-due-date">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="task-tags">Tags</label>
+                            <input type="text" id="task-tags" placeholder="Enter tags separated by commas">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="closeAddTaskModal()">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                Add Task
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Task Modal -->
+        <div id="edit-task-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Edit Task</h3>
+                    <button class="close-btn" onclick="closeEditTaskModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-task-form">
+                        <input type="hidden" id="edit-task-id">
+                        
+                        <div class="form-group">
+                            <label for="edit-task-title">Task Title *</label>
+                            <input type="text" id="edit-task-title" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-task-description">Description</label>
+                            <textarea id="edit-task-description"></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="edit-task-priority">Priority</label>
+                                <select id="edit-task-priority">
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="edit-task-due-date">Due Date</label>
+                                <input type="date" id="edit-task-due-date">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-task-tags">Tags</label>
+                            <input type="text" id="edit-task-tags">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="edit-task-completed">
+                                <span class="checkmark"></span>
+                                Mark as completed
+                            </label>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-danger" onclick="deleteCurrentTask()">
+                                <i class="fas fa-trash"></i>
+                                Delete
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="closeEditTaskModal()">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 
