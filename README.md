@@ -1,21 +1,20 @@
-# AI Task Assistant
+# AI Task Assistant - Backend API
 
-An intelligent task management system with AI-powered suggestions, vector-based memory, and multi-platform support (Web + Flutter Mobile App).
+A powerful AI-powered task management backend with intelligent suggestions, vector-based memory, and comprehensive security features.
 
 ## 🌟 Features
 
 - **AI-Powered Task Management**: Smart task suggestions and categorization
 - **Vector Memory**: Advanced semantic search using Pinecone vector database
-- **Multi-Platform**: Web interface and Flutter mobile app
+- **RESTful API**: Complete backend API for task management
 - **Security**: OWASP-compliant with rate limiting, CORS, and secure authentication
 - **Analytics**: Task completion tracking and productivity insights
-- **Google OAuth**: Secure login with Google accounts
+- **Google OAuth**: Secure login with Google accounts (optional)
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Python 3.8+
-- Flutter SDK (for mobile app)
 - Pinecone API key
 - Google OAuth credentials (optional)
 
@@ -54,23 +53,6 @@ An intelligent task management system with AI-powered suggestions, vector-based 
    python web_app.py
    ```
 
-### Mobile App Setup
-
-1. **Navigate to Flutter app**
-   ```bash
-   cd flutter_app
-   ```
-
-2. **Install Flutter dependencies**
-   ```bash
-   flutter pub get
-   ```
-
-3. **Run the app**
-   ```bash
-   flutter run
-   ```
-
 ## 📁 Project Structure
 
 ```
@@ -85,7 +67,6 @@ AI_Task_Assistant/
 ├── static/                 # Web assets (CSS, JS)
 ├── templates/              # HTML templates
 ├── tests/                  # Test files
-├── flutter_app/            # Flutter mobile application
 ├── requirements.txt        # Python dependencies
 └── README.md              # This file
 ```
@@ -120,21 +101,34 @@ FLASK_ENV=development
 
 ## 🚀 Deployment
 
-### Free Cloud Platforms
+### Railway Deployment (Recommended)
 
-The app is ready for deployment on:
-- **Railway**: [Deployment Guide](DEPLOYMENT_GUIDE.md#railway)
-- **Render**: [Deployment Guide](DEPLOYMENT_GUIDE.md#render)
-- **Heroku**: [Deployment Guide](DEPLOYMENT_GUIDE.md#heroku)
+This backend is optimized for Railway deployment:
 
-### Production Checklist
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Backend ready for deployment"
+   git push origin main
+   ```
 
-- [ ] Set `FLASK_ENV=production`
-- [ ] Configure HTTPS
-- [ ] Set up proper logging
-- [ ] Configure database (if using external DB)
-- [ ] Set up monitoring
-- [ ] Configure CORS for production domains
+2. **Deploy on Railway**
+   - Go to [railway.app](https://railway.app)
+   - Connect your GitHub repository
+   - Set environment variables
+   - Deploy automatically
+
+3. **Configuration Files**
+   - `railway.json` - Railway deployment config
+   - `requirements.txt` - Python dependencies
+   - `Procfile` - Production server config
+
+### Other Platforms
+
+The app is also ready for:
+- **Render**: Use `requirements.txt` and `gunicorn`
+- **Heroku**: Use `Procfile` and `runtime.txt`
+- **VPS**: Use `gunicorn` for production
 
 ## 🔒 Security Features
 
@@ -145,21 +139,6 @@ The app is ready for deployment on:
 - **Secure Headers**: HTTP security headers with Flask-Talisman
 - **Password Hashing**: Bcrypt for secure password storage
 - **Session Management**: Secure session handling
-
-## 🧪 Testing
-
-Run tests from the `tests/` directory:
-
-```bash
-# Security tests
-python tests/test_security.py
-
-# Authentication tests
-python tests/test_auth.py
-
-# Task management tests
-python tests/test_task_update.py
-```
 
 ## 📊 API Endpoints
 
@@ -179,6 +158,24 @@ python tests/test_task_update.py
 - `GET /api/analytics` - Get user analytics
 - `GET /api/suggestions` - Get AI suggestions
 
+### Health Check
+- `GET /health` - Application health status
+
+## 🧪 Testing
+
+Run tests from the `tests/` directory:
+
+```bash
+# Security tests
+python tests/test_security.py
+
+# Authentication tests
+python tests/test_auth.py
+
+# Task management tests
+python tests/test_task_update.py
+```
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -193,15 +190,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🆘 Support
 
-- **Documentation**: [Architecture Guide](ARCHITECTURE_GUIDE.md)
-- **Security**: [Security Assessment](SECURITY_ASSESSMENT.md)
-- **Testing**: [Testing Guide](TESTING_GUIDE.md)
-- **Deployment**: [Deployment Guide](DEPLOYMENT_GUIDE.md)
+- **Deployment**: See `RAILWAY_DEPLOYMENT.md`
+- **API Documentation**: Check the endpoints above
+- **Security**: All security features are OWASP-compliant
 
-## 🔄 Version History
+---
 
-- **v1.0.0**: Initial release with web interface
-- **v1.1.0**: Added Flutter mobile app
-- **v1.2.0**: Enhanced security features
-- **v1.3.0**: Google OAuth integration
-- **v1.4.0**: Production deployment ready 
+🎉 **Your AI Task Assistant backend is ready for production deployment!** 
