@@ -2,7 +2,7 @@ import numpy as np
 import pinecone
 import pickle
 import os
-from sentence_transformers import SentenceTransformer
+from hf_api import HuggingFaceAPI
 from typing import List, Dict, Tuple, Optional
 from datetime import datetime
 import uuid
@@ -29,7 +29,7 @@ class PineconeMemory:
         
         Args:
             user_id: Unique identifier for the user (creates separate namespaces)
-            model_name: Name of the sentence transformer model to use
+            model_name: Name of the Hugging Face model to use
             api_key: Pinecone API key
             environment: Pinecone environment (e.g., 'us-west1-gcp')
             index_name: Pinecone index name
@@ -50,7 +50,7 @@ class PineconeMemory:
         
         # Get or create cached model
         self.model = self._get_cached_model(model_name)
-        self.dimension = self.model.get_sentence_embedding_dimension()
+        self.dimension = 768  # Standard dimension for most sentence transformers
         
         # Initialize Pinecone index (simpler approach)
         self.index = self.pc.Index(self.index_name)
@@ -69,7 +69,7 @@ class PineconeMemory:
         # Load existing data
         self._load_existing_data()
     
-    def _get_cached_model(self, model_name: str) -> SentenceTransformer:
+    def _get_cached_model(self, model_name: str) -> HuggingFaceAPI:
         """Get or create a cached model instance."""
         with _MODEL_LOCK:
             # First try to use global model if available
@@ -84,8 +84,8 @@ class PineconeMemory:
             
             # Fall back to cache
             if model_name not in _MODEL_CACHE:
-                print(f"Loading model {model_name}...")
-                _MODEL_CACHE[model_name] = SentenceTransformer(model_name)
+                print(f"Loading Hugging Face model {model_name}...")
+                _MODEL_CACHE[model_name] = HuggingFaceAPI(model_name)
                 print(f"Model {model_name} loaded and cached.")
             return _MODEL_CACHE[model_name]
     

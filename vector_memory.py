@@ -2,7 +2,7 @@ import numpy as np
 import faiss
 import pickle
 import os
-from sentence_transformers import SentenceTransformer
+from hf_api import HuggingFaceAPI
 from typing import List, Dict, Tuple, Optional
 import yaml
 from datetime import datetime
@@ -16,13 +16,13 @@ _MODEL_CACHE = {}
 _MODEL_LOCK = threading.Lock()
 
 class VectorMemory:
-    def __init__(self, user_id: str = "default", model_name: str = "all-MiniLM-L6-v2"):
+    def __init__(self, user_id: str = "default", model_name: str = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"):
         """
         Initialize the vector memory system for task storage and retrieval.
         
         Args:
             user_id: Unique identifier for the user (creates separate databases)
-            model_name: Name of the sentence transformer model to use
+            model_name: Name of the Hugging Face model to use
         """
         self.user_id = user_id
         self.model_name = model_name
@@ -33,7 +33,7 @@ class VectorMemory:
         
         # Get or create cached model
         self.model = self._get_cached_model(model_name)
-        self.dimension = self.model.get_sentence_embedding_dimension()
+        self.dimension = 768  # Standard dimension for most sentence transformers
         
         # Initialize FAISS index
         self.index = faiss.IndexFlatIP(self.dimension)  # Inner product for cosine similarity
@@ -52,12 +52,12 @@ class VectorMemory:
         # Load existing data if available
         self._load_existing_data()
     
-    def _get_cached_model(self, model_name: str) -> SentenceTransformer:
+    def _get_cached_model(self, model_name: str) -> HuggingFaceAPI:
         """Get or create a cached model instance."""
         with _MODEL_LOCK:
             if model_name not in _MODEL_CACHE:
-                print(f"Loading model {model_name}...")
-                _MODEL_CACHE[model_name] = SentenceTransformer(model_name)
+                print(f"Loading Hugging Face model {model_name}...")
+                _MODEL_CACHE[model_name] = HuggingFaceAPI(model_name)
                 print(f"Model {model_name} loaded and cached.")
             return _MODEL_CACHE[model_name]
     

@@ -6,6 +6,7 @@ A powerful AI-powered task management backend with intelligent suggestions, vect
 
 - **AI-Powered Task Management**: Smart task suggestions and categorization
 - **Vector Memory**: Advanced semantic search using Pinecone vector database
+- **Hugging Face API**: Cloud-based embeddings for multilingual support
 - **RESTful API**: Complete backend API for task management
 - **Security**: OWASP-compliant with rate limiting, CORS, and secure authentication
 - **Analytics**: Task completion tracking and productivity insights
@@ -16,6 +17,7 @@ A powerful AI-powered task management backend with intelligent suggestions, vect
 ### Prerequisites
 - Python 3.8+
 - Pinecone API key
+- Hugging Face API token (optional, for better performance)
 - Google OAuth credentials (optional)
 
 ### Backend Setup
@@ -58,6 +60,7 @@ A powerful AI-powered task management backend with intelligent suggestions, vect
 ```
 AI_Task_Assistant/
 ├── web_app.py              # Main Flask application
+├── hf_api.py              # Hugging Face API wrapper
 ├── task_assistant.py       # AI task processing
 ├── pinecone_memory.py      # Vector database operations
 ├── user_manager.py         # User authentication & management
@@ -83,6 +86,9 @@ PINECONE_API_KEY=your_pinecone_api_key
 PINECONE_ENVIRONMENT=your_pinecone_environment
 PINECONE_INDEX_NAME=your_index_name
 
+# Hugging Face API (Optional but recommended)
+HF_TOKEN=your_hugging_face_token
+
 # Google OAuth (Optional)
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
@@ -91,6 +97,23 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret
 SECRET_KEY=your_secret_key
 FLASK_ENV=development
 ```
+
+### Hugging Face API Setup
+
+For better performance and multilingual support:
+
+1. Create a Hugging Face account at [huggingface.co](https://huggingface.co)
+2. Go to Settings → Access Tokens
+3. Create a new token with "Read" permissions
+4. Add `HF_TOKEN=your_token` to your `.env` file
+
+**Benefits:**
+- No local model loading (~500MB RAM saved)
+- Better multilingual support (Roman Urdu, etc.)
+- Always up-to-date models
+- Faster deployment
+
+See `HUGGING_FACE_SETUP.md` for detailed instructions.
 
 ### Pinecone Setup
 

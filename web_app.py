@@ -14,7 +14,7 @@ import os
 from functools import wraps
 from dotenv import load_dotenv
 from flask_cors import CORS
-from sentence_transformers import SentenceTransformer
+from hf_api import GLOBAL_HF_MODEL
 
 load_dotenv()
 
@@ -22,14 +22,10 @@ app = Flask(__name__)
 CORS(app)
 app.secret_key = os.getenv('SECRET_KEY', 'your-secret-key-here')
 
-# Pre-load the model globally to avoid multiple loading
-print("🚀 Pre-loading sentence transformer model...")
-try:
-    GLOBAL_MODEL = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
-    print("✅ Sentence transformer model loaded successfully!")
-except Exception as e:
-    print(f"⚠️ Failed to load global model: {e}")
-    GLOBAL_MODEL = None
+# Use Hugging Face API instead of local model
+print("🚀 Initializing Hugging Face API...")
+GLOBAL_MODEL = GLOBAL_HF_MODEL
+print("✅ Hugging Face API initialized successfully!")
 
 # Global components
 user_manager = None
